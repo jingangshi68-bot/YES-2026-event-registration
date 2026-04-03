@@ -1,404 +1,1299 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>活动报名</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Chinese Culture Experience Camp 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&family=Noto+Serif+SC:wght@300;400&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --ink: #1a1a1a;
-    --ink-muted: #6b6b6b;
-    --ink-faint: #b0b0b0;
-    --paper: #f5f2eb;
-    --paper-white: #fdfcf9;
-    --accent: #c0392b;
-    --accent-light: #f9eae8;
-    --border: #d8d3c8;
-    --success: #27ae60;
-    --radius: 3px;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    background: var(--paper);
-    color: var(--ink);
-    font-family: 'Noto Serif SC', serif;
-    min-height: 100vh;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding: 48px 16px 80px;
-  }
-  .page { width: 100%; max-width: 620px; }
-  .header {
-    border-bottom: 2px solid var(--ink);
-    padding-bottom: 20px;
-    margin-bottom: 36px;
-  }
-  .header::before {
-    content: '';
-    display: block;
-    width: 40px;
-    height: 3px;
-    background: var(--accent);
-    margin-bottom: 16px;
-  }
-  .header-label {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: var(--ink-muted);
-    margin-bottom: 8px;
-  }
-  .header h1 { font-size: 28px; font-weight: 600; line-height: 1.3; }
-  .header-sub {
-    margin-top: 10px;
-    font-size: 13px;
-    color: var(--ink-muted);
-    font-family: 'DM Mono', monospace;
-    line-height: 1.6;
-  }
-  .privacy-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    background: var(--paper-white);
-    border: 1px solid var(--border);
-    border-radius: 2px;
-    padding: 7px 12px;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--ink-muted);
-    margin-bottom: 36px;
-  }
-  .privacy-badge svg { width: 13px; height: 13px; flex-shrink: 0; }
-  .form-group { margin-bottom: 26px; }
-  label { display: block; font-size: 13px; font-weight: 600; letter-spacing: 0.03em; margin-bottom: 7px; }
-  label .req { color: var(--accent); margin-left: 3px; font-weight: 400; }
-  label .hint {
-    display: block;
-    font-weight: 400;
-    font-size: 11px;
-    color: var(--ink-faint);
-    margin-top: 2px;
-    font-family: 'DM Mono', monospace;
-  }
-  input[type="text"], input[type="email"], textarea {
-    width: 100%;
-    background: var(--paper-white);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 11px 13px;
-    font-family: 'Noto Serif SC', serif;
-    font-size: 15px;
-    color: var(--ink);
-    transition: border-color 0.15s, box-shadow 0.15s;
-    outline: none;
-  }
-  input[type="text"]:focus, input[type="email"]:focus, textarea:focus {
-    border-color: var(--ink);
-    box-shadow: 0 0 0 3px rgba(26,26,26,0.06);
-  }
-  input.error, textarea.error {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(192,57,43,0.08);
-  }
-  textarea { resize: vertical; min-height: 96px; line-height: 1.6; }
-  .field-error {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--accent);
-    margin-top: 4px;
-    display: none;
-  }
-  .field-error.visible { display: block; }
-  .divider { border: none; border-top: 1px dashed var(--border); margin: 32px 0; }
-  .section-title {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-    margin-bottom: 22px;
-  }
-  .submit-row {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-top: 36px;
-    padding-top: 26px;
-    border-top: 1px solid var(--border);
-  }
-  button[type="submit"] {
-    background: var(--ink);
-    color: var(--paper);
-    border: none;
-    border-radius: var(--radius);
-    padding: 13px 30px;
-    font-family: 'Noto Serif SC', serif;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.15s, transform 0.1s;
-  }
-  button[type="submit"]:hover { background: #333; }
-  button[type="submit"]:active { transform: scale(0.98); }
-  button[type="submit"]:disabled { background: var(--ink-faint); cursor: not-allowed; }
-  .spinner {
-    display: none;
-    width: 14px; height: 14px;
-    border: 2px solid rgba(255,255,255,0.3);
-    border-top-color: #fff;
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-    vertical-align: middle;
-    margin-left: 8px;
-  }
-  button[type="submit"].loading .spinner { display: inline-block; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .submit-note {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--ink-faint);
-    line-height: 1.5;
-  }
-  .success-screen {
-    display: none;
-    text-align: center;
-    padding: 70px 0;
-    animation: fadeUp 0.5s both;
-  }
-  .success-screen.visible { display: block; }
-  @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
-  .success-icon {
-    width: 54px; height: 54px;
-    background: #eafaf1;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 auto 20px;
-  }
-  .success-icon svg { width: 24px; height: 24px; }
-  .success-screen h2 { font-size: 22px; font-weight: 600; margin-bottom: 10px; }
-  .success-screen p {
-    font-size: 13px;
-    color: var(--ink-muted);
-    font-family: 'DM Mono', monospace;
-    line-height: 1.7;
-  }
-  .ref-code {
-    display: inline-block;
-    margin-top: 20px;
-    background: var(--paper-white);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 8px 18px;
-    font-family: 'DM Mono', monospace;
-    font-size: 13px;
-    letter-spacing: 0.08em;
-    color: var(--ink-muted);
-  }
-  .error-banner {
-    display: none;
-    background: var(--accent-light);
-    border: 1px solid #e8b4af;
-    border-radius: var(--radius);
-    padding: 11px 14px;
-    font-family: 'DM Mono', monospace;
-    font-size: 12px;
-    color: var(--accent);
-    margin-bottom: 20px;
-    line-height: 1.5;
-  }
-  .error-banner.visible { display: block; }
-  .passport-note {
-    background: var(--paper-white);
-    border-left: 2px solid var(--border);
-    padding: 8px 12px;
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    color: var(--ink-muted);
-    margin-top: 8px;
-    line-height: 1.6;
-  }
+:root {
+  --ink:        #0d1f1a;
+  --forest:     #0f2b22;
+  --forest2:    #163a2e;
+  --jade:       #1d5440;
+  --jade-light: #256b50;
+  --gold:       #c9a84c;
+  --gold-light: #e8c97a;
+  --gold-pale:  #f5e9c8;
+  --cream:      #faf6ed;
+  --cream2:     #f0e8d6;
+  --red:        #8b2615;
+  --red-bright: #c03020;
+  --text-on-dark: #e8dfc8;
+  --text-muted:   #a09070;
+  --border-gold:  rgba(201,168,76,0.35);
+  --border-gold2: rgba(201,168,76,0.6);
+  --r: 2px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--forest);
+  color: var(--text-on-dark);
+  font-family: 'Cormorant Garamond', serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ── Decorative SVG background pattern ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    url("data:image/svg+xml,%3Csvg width='120' height='120' viewBox='0 0 120 120' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='rgba(201,168,76,0.07)' stroke-width='0.5'%3E%3Crect x='10' y='10' width='100' height='100' rx='2'/%3E%3Crect x='20' y='20' width='80' height='80' rx='2'/%3E%3Cline x1='60' y1='10' x2='60' y2='20'/%3E%3Cline x1='60' y1='100' x2='60' y2='110'/%3E%3Cline x1='10' y1='60' x2='20' y2='60'/%3E%3Cline x1='100' y1='60' x2='110' y2='60'/%3E%3Ccircle cx='60' cy='60' r='8'/%3E%3Ccircle cx='60' cy='60' r='3'/%3E%3Cline x1='35' y1='35' x2='45' y2='45'/%3E%3Cline x1='75' y1='35' x2='85' y2='45'/%3E%3Cline x1='35' y1='75' x2='45' y2='85'/%3E%3Cline x1='75' y1='75' x2='85' y2='85'/%3E%3C/g%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Layout ── */
+.wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 740px;
+  margin: 0 auto;
+  padding: 0 20px 100px;
+}
+
+/* ── Hero header ── */
+.hero {
+  position: relative;
+  text-align: center;
+  padding: 64px 40px 52px;
+  margin-bottom: 0;
+}
+
+/* Top decorative border */
+.hero::before {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--gold), var(--red-bright), var(--gold), transparent);
+  margin-bottom: 40px;
+}
+
+/* Corner ornaments */
+.corner {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+}
+.corner svg { width: 100%; height: 100%; }
+.corner-tl { top: 20px; left: 20px; }
+.corner-tr { top: 20px; right: 20px; transform: scaleX(-1); }
+.corner-bl { bottom: 0; left: 20px; transform: scaleY(-1); }
+.corner-br { bottom: 0; right: 20px; transform: scale(-1); }
+
+.hero-eyebrow {
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  letter-spacing: 0.35em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  opacity: 0;
+  animation: riseIn 0.8s 0.1s forwards;
+}
+
+.hero-zh {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 28px;
+  font-weight: 300;
+  color: var(--gold-light);
+  letter-spacing: 0.25em;
+  margin-bottom: 12px;
+  opacity: 0;
+  animation: riseIn 0.8s 0.25s forwards;
+}
+
+.hero h1 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(20px, 3.5vw, 32px);
+  font-weight: 600;
+  color: var(--cream);
+  letter-spacing: 0.04em;
+  line-height: 1.25;
+  margin-bottom: 16px;
+  opacity: 0;
+  animation: riseIn 0.8s 0.4s forwards;
+}
+
+.hero-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 17px;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  margin-bottom: 28px;
+  opacity: 0;
+  animation: riseIn 0.8s 0.55s forwards;
+}
+
+.hero-divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  justify-content: center;
+  margin-bottom: 0;
+  opacity: 0;
+  animation: riseIn 0.8s 0.7s forwards;
+}
+.hero-divider-line {
+  flex: 1;
+  max-width: 120px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-gold2));
+}
+.hero-divider-line.rev {
+  background: linear-gradient(270deg, transparent, var(--border-gold2));
+}
+.hero-divider-diamond {
+  width: 8px; height: 8px;
+  background: var(--gold);
+  transform: rotate(45deg);
+}
+.hero-divider-dot {
+  width: 4px; height: 4px;
+  background: var(--gold-light);
+  transform: rotate(45deg);
+}
+
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Requirements panel ── */
+.req-panel {
+  background: rgba(15,43,34,0.8);
+  border: 1px solid var(--border-gold);
+  border-top: 2px solid var(--gold);
+  padding: 28px 36px;
+  margin: 36px 0;
+  position: relative;
+  opacity: 0;
+  animation: riseIn 0.8s 0.85s forwards;
+}
+
+.req-panel::before {
+  content: '◈';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--forest);
+  color: var(--gold);
+  padding: 0 12px;
+  font-size: 16px;
+  letter-spacing: 0;
+}
+
+.req-label {
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  letter-spacing: 0.3em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 18px;
+  text-align: center;
+}
+
+.req-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px 28px;
+}
+@media (max-width: 560px) { .req-grid { grid-template-columns: 1fr; } }
+
+.req-item {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 13.5px;
+  color: var(--text-on-dark);
+  line-height: 1.6;
+}
+.req-num {
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  color: var(--gold);
+  margin-top: 3px;
+  flex-shrink: 0;
+  letter-spacing: 0.05em;
+}
+
+/* ── Privacy note ── */
+.privacy-strip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+  padding: 12px 20px;
+  border: 1px solid rgba(201,168,76,0.2);
+  border-radius: var(--r);
+  margin-bottom: 40px;
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+}
+.privacy-strip svg { flex-shrink: 0; width: 14px; height: 14px; }
+
+/* ── Form card ── */
+.form-card {
+  background: var(--cream);
+  color: var(--ink);
+  border-radius: 0;
+  padding: 48px 52px;
+  position: relative;
+  border: 1px solid rgba(201,168,76,0.4);
+  opacity: 0;
+  animation: riseIn 0.9s 1s forwards;
+}
+
+.form-card::before,
+.form-card::after {
+  content: '';
+  position: absolute;
+  left: 16px; right: 16px;
+  height: 3px;
+}
+.form-card::before {
+  top: 0;
+  background: linear-gradient(90deg, var(--red), var(--gold), var(--jade-light), var(--gold), var(--red));
+}
+.form-card::after {
+  bottom: 0;
+  background: linear-gradient(90deg, var(--red), var(--gold), var(--jade-light), var(--gold), var(--red));
+}
+
+@media (max-width: 560px) { .form-card { padding: 32px 24px; } }
+
+/* ── Section headers ── */
+.sec-head {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+  margin-top: 8px;
+}
+.sec-line { flex: 1; height: 1px; background: var(--cream2); }
+.sec-title {
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  letter-spacing: 0.25em;
+  color: var(--jade);
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.sec-diamond {
+  width: 5px; height: 5px;
+  background: var(--gold);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+
+.form-divider {
+  border: none;
+  border-top: 1px solid var(--cream2);
+  margin: 36px 0 32px;
+}
+
+/* ── Field groups ── */
+.form-group { margin-bottom: 24px; }
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 480px) { .form-row { grid-template-columns: 1fr; } }
+
+label.field-label {
+  display: block;
+  font-family: 'Cinzel', serif;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--jade);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+label.field-label .req { color: var(--red); margin-left: 4px; }
+.field-hint {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 12.5px;
+  color: #8a8070;
+  margin-top: 3px;
+  line-height: 1.5;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="date"],
+select {
+  width: 100%;
+  background: #fdfaf4;
+  border: 1px solid #d8cdb0;
+  border-bottom: 2px solid #c9b888;
+  border-radius: 0;
+  padding: 12px 14px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.2s, background 0.2s, box-shadow 0.2s;
+  appearance: none;
+  -webkit-appearance: none;
+}
+input[type="date"] {
+  font-family: monospace;
+  font-size: 14px;
+}
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='7' viewBox='0 0 10 7'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%23896a2a' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+  cursor: pointer;
+}
+input:focus, select:focus {
+  border-color: var(--jade);
+  border-bottom-color: var(--jade);
+  background: #fff;
+  box-shadow: 0 2px 0 var(--jade);
+}
+input.error, select.error {
+  border-color: var(--red);
+  border-bottom-color: var(--red);
+  box-shadow: 0 2px 0 var(--red);
+}
+
+/* ── Gender radio ── */
+.radio-row { display: flex; gap: 12px; }
+.radio-opt { flex: 1; position: relative; }
+.radio-opt input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
+.radio-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid #d8cdb0;
+  border-bottom: 2px solid #c9b888;
+  padding: 11px 16px;
+  cursor: pointer;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 16px;
+  color: #5a4a30;
+  transition: all 0.18s;
+  background: #fdfaf4;
+  letter-spacing: 0.04em;
+}
+.radio-pip {
+  width: 13px; height: 13px;
+  border: 1.5px solid #b09060;
+  border-radius: 50%;
+  flex-shrink: 0;
+  position: relative;
+  transition: border-color 0.15s;
+}
+.radio-opt input:checked + .radio-card {
+  background: var(--jade);
+  border-color: var(--jade);
+  border-bottom-color: var(--ink);
+  color: var(--cream);
+}
+.radio-opt input:checked + .radio-card .radio-pip {
+  border-color: var(--gold-light);
+  background: var(--gold-light);
+}
+.radio-opt input:checked + .radio-card .radio-pip::after {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  border-radius: 50%;
+  background: var(--jade);
+}
+.radio-row.error .radio-card { border-color: var(--red); }
+
+/* ── Field error ── */
+.field-error {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 12px;
+  color: var(--red);
+  margin-top: 4px;
+  display: none;
+  letter-spacing: 0.02em;
+}
+.field-error.visible { display: block; }
+
+/* ── Error banner ── */
+.err-banner {
+  display: none;
+  background: #fdf0ee;
+  border-left: 3px solid var(--red);
+  padding: 12px 16px;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 14px;
+  color: var(--red);
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+.err-banner.visible { display: block; }
+
+/* ── Submit ── */
+.submit-area {
+  margin-top: 40px;
+  padding-top: 32px;
+  border-top: 1px solid var(--cream2);
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.btn-submit {
+  position: relative;
+  background: var(--jade);
+  color: var(--gold-pale);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: 'Cinzel', serif;
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  outline: none;
+  overflow: hidden;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+.btn-submit:hover { background: var(--jade-light); }
+.btn-submit:active { transform: scale(0.98); }
+.btn-submit:disabled { background: #b0a898; cursor: not-allowed; }
+
+.btn-inner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 36px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Gold shimmer top/bottom borders */
+.btn-submit::before, .btn-submit::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+}
+.btn-submit::before { top: 0; }
+.btn-submit::after  { bottom: 0; }
+
+.btn-arrow {
+  width: 14px; height: 14px;
+  border-top: 1.5px solid var(--gold);
+  border-right: 1.5px solid var(--gold);
+  transform: rotate(45deg);
+  margin-left: 4px;
+  transition: transform 0.2s;
+}
+.btn-submit:hover .btn-arrow { transform: rotate(45deg) translate(3px, -3px); }
+
+.spinner {
+  display: none;
+  width: 14px; height: 14px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: var(--gold-light);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+.btn-submit.loading .spinner { display: block; }
+.btn-submit.loading .btn-arrow { display: none; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.submit-note {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 12.5px;
+  color: #9a8a6a;
+  line-height: 1.7;
+}
+
+/* ── Success screen ── */
+.success {
+  display: none;
+  text-align: center;
+  padding: 60px 20px;
+  animation: riseIn 0.6s forwards;
+}
+.success.visible { display: block; }
+.success-seal {
+  width: 72px; height: 72px;
+  margin: 0 auto 24px;
+  border: 2px solid var(--gold);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(201,168,76,0.1);
+  position: relative;
+}
+.success-seal::before {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  border: 1px solid rgba(201,168,76,0.3);
+}
+.success-seal svg { width: 28px; height: 28px; }
+.success h2 {
+  font-family: 'Cinzel', serif;
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--cream);
+  letter-spacing: 0.08em;
+  margin-bottom: 14px;
+}
+.success p {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 16px;
+  color: var(--text-muted);
+  line-height: 1.8;
+  margin-bottom: 24px;
+}
+.ref-pill {
+  display: inline-block;
+  border: 1px solid var(--border-gold);
+  padding: 8px 24px;
+  font-family: monospace;
+  font-size: 13px;
+  color: var(--gold-light);
+  letter-spacing: 0.12em;
+}
+
+/* ── Bottom ornament ── */
+.footer-orn {
+  text-align: center;
+  padding: 36px 0 0;
+  opacity: 0;
+  animation: riseIn 0.8s 1.2s forwards;
+}
+.footer-orn-text {
+  font-family: 'Noto Serif SC', serif;
+  font-size: 12px;
+  font-weight: 300;
+  color: rgba(201,168,76,0.4);
+  letter-spacing: 0.3em;
+}
 </style>
 </head>
 <body>
-<div class="page">
+<div class="wrap">
 
-  <div class="header">
-    <div class="header-label">Registration Form · 报名表</div>
-    <h1>活动报名登记</h1>
-    <div class="header-sub">请如实填写以下信息，提交后将由主办方审核确认。</div>
-  </div>
-
-  <div class="privacy-badge">
-    <svg viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="2">
-      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-    </svg>
-    您的信息经加密提交，其他报名者无法查看您的内容
-  </div>
-
-  <div class="error-banner" id="errorBanner"></div>
-
-  <form id="regForm" novalidate>
-
-    <div class="section-title">— 基本信息</div>
-
-    <div class="form-group">
-      <label>姓名 <span class="req">*</span>
-        <span class="hint">请填写真实姓名（与证件一致）</span>
-      </label>
-      <input type="text" id="name" placeholder="例：张三" autocomplete="name" />
-      <div class="field-error" id="nameErr">请填写姓名</div>
-    </div>
-
-    <div class="form-group">
-      <label>电子邮箱 <span class="req">*</span>
-        <span class="hint">确认函将发送至此地址</span>
-      </label>
-      <input type="email" id="email" placeholder="example@email.com" autocomplete="email" />
-      <div class="field-error" id="emailErr">请填写有效的邮箱地址</div>
-    </div>
-
-    <div class="form-group">
-      <label>单位 / 学校 <span class="req">*</span></label>
-      <input type="text" id="org" placeholder="例：某某大学 · 某某公司" />
-      <div class="field-error" id="orgErr">请填写单位或学校名称</div>
-    </div>
-
-    <hr class="divider">
-    <div class="section-title">— 证件信息</div>
-
-    <div class="form-group">
-      <label>护照号码 <span class="req">*</span>
-        <span class="hint">仅用于本次活动身份核验，严格保密</span>
-      </label>
-      <input type="text" id="passport" placeholder="例：E12345678" maxlength="20"
-             style="font-family:'DM Mono',monospace;letter-spacing:0.06em;text-transform:uppercase;" />
-      <div class="passport-note">此信息将加密存储，仅主办方可查阅，不会对外公开。</div>
-      <div class="field-error" id="passportErr">请填写护照号码</div>
-    </div>
-
-    <hr class="divider">
-    <div class="section-title">— 其他问题</div>
-
-    <div class="form-group">
-      <label>您是通过什么渠道了解到本次活动的？
-        <span class="hint">选填</span>
-      </label>
-      <input type="text" id="source" placeholder="例：朋友推荐、微信公众号、官方网站…" />
-    </div>
-
-    <div class="form-group">
-      <label>您对本次活动有何期待或需要补充说明的事项？
-        <span class="hint">选填</span>
-      </label>
-      <textarea id="remarks" placeholder="请填写您的期待、特殊需求或其他说明…"></textarea>
-    </div>
-
-    <div class="submit-row">
-      <button type="submit" id="submitBtn">
-        <span class="btn-text">提交报名</span>
-        <span class="spinner"></span>
-      </button>
-      <div class="submit-note">
-        提交即视为同意<br>主办方隐私保护政策
-      </div>
-    </div>
-
-  </form>
-
-  <div class="success-screen" id="successScreen">
-    <div class="success-icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#27ae60" stroke-width="2.5">
-        <polyline points="20 6 9 17 4 12"/>
+  <!-- ── Hero ── -->
+  <div class="hero">
+    <!-- Corner ornaments (SVG window-lattice motif) -->
+    <div class="corner corner-tl">
+      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 2 L2 24 M2 2 L24 2" stroke="rgba(201,168,76,0.5)" stroke-width="1"/>
+        <path d="M8 2 L8 8 L2 8" stroke="rgba(201,168,76,0.35)" stroke-width="0.5"/>
+        <path d="M2 14 L14 14 L14 2" stroke="rgba(201,168,76,0.25)" stroke-width="0.5"/>
+        <rect x="4" y="4" width="6" height="6" stroke="rgba(201,168,76,0.3)" stroke-width="0.5" fill="none"/>
       </svg>
     </div>
-    <h2>报名成功！</h2>
-    <p>您的报名信息已收到，<br>确认函将发送至您填写的邮箱地址。</p>
-    <div class="ref-code" id="refCode"></div>
+    <div class="corner corner-tr">
+      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M2 2 L2 24 M2 2 L24 2" stroke="rgba(201,168,76,0.5)" stroke-width="1"/>
+        <path d="M8 2 L8 8 L2 8" stroke="rgba(201,168,76,0.35)" stroke-width="0.5"/>
+        <path d="M2 14 L14 14 L14 2" stroke="rgba(201,168,76,0.25)" stroke-width="0.5"/>
+        <rect x="4" y="4" width="6" height="6" stroke="rgba(201,168,76,0.3)" stroke-width="0.5" fill="none"/>
+      </svg>
+    </div>
+
+    <div class="hero-eyebrow">People's Republic of China · United States of America</div>
+    <div class="hero-zh">中美青年文化体验营</div>
+    <h1>Chinese Culture Experience Camp 2026</h1>
+    <div class="hero-sub">Youth Exchange Program between China and the United States</div>
+
+    <div class="hero-divider">
+      <div class="hero-divider-line"></div>
+      <div class="hero-divider-dot"></div>
+      <div class="hero-divider-diamond"></div>
+      <div class="hero-divider-dot"></div>
+      <div class="hero-divider-line rev"></div>
+    </div>
   </div>
 
-</div>
+  <!-- ── Requirements ── -->
+  <div class="req-panel">
+    <div class="req-label">Registration Requirements · 报名须知</div>
+    <div class="req-grid">
+      <div class="req-item">
+        <span class="req-num">I.</span>
+        <span>Nationality of Campers: <strong style="color:var(--gold-light)">American</strong></span>
+      </div>
+      <div class="req-item">
+        <span class="req-num">II.</span>
+        <span>Age: <strong style="color:var(--gold-light)">17–35 years old</strong></span>
+      </div>
+      <div class="req-item">
+        <span class="req-num">III.</span>
+        <span>Dates: <strong style="color:var(--gold-light)">July 1–12, 2026</strong> (12 days incl. travel)</span>
+      </div>
+      <div class="req-item">
+        <span class="req-num">IV.</span>
+        <span>Host Cities: <strong style="color:var(--gold-light)">Beijing · Tianjin · Chengde</strong></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Privacy strip ── -->
+  <div class="privacy-strip">
+    <svg viewBox="0 0 24 24" fill="none" stroke="rgba(201,168,76,0.6)" stroke-width="1.5">
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+    </svg>
+    Your submission is encrypted and kept strictly confidential — other applicants cannot view your information.
+  </div>
+
+  <!-- ── Form card ── -->
+  <div class="form-card">
+
+    <div class="err-banner" id="errBanner"></div>
+
+    <form id="regForm" novalidate>
+
+      <!-- Personal -->
+      <div class="sec-head">
+        <div class="sec-line"></div>
+        <div class="sec-diamond"></div>
+        <div class="sec-title">Personal Information</div>
+        <div class="sec-diamond"></div>
+        <div class="sec-line"></div>
+      </div>
+
+      <!-- Name -->
+      <div class="form-group">
+        <label class="field-label">Full Name <span class="req">✦</span></label>
+        <input type="text" id="name" placeholder="First Name  /  Middle Name  /  Last Name" autocomplete="name"/>
+        <div class="field-hint">Must match your passport exactly.</div>
+        <div class="field-error" id="nameErr">Please enter your full name.</div>
+      </div>
+
+      <!-- Age + Birthday row -->
+      <div class="form-row">
+        <div class="form-group">
+          <label class="field-label">Age <span class="req">✦</span></label>
+          <input type="text" id="age" placeholder="e.g.  22" inputmode="numeric" maxlength="3"/>
+          <div class="field-error" id="ageErr">Valid age: 17–35.</div>
+        </div>
+        <div class="form-group">
+          <label class="field-label">Date of Birth</label>
+          <input type="date" id="birthday" min="1989-01-01" max="2009-12-31"/>
+        </div>
+      </div>
+
+      <!-- Gender -->
+      <div class="form-group">
+        <label class="field-label">Gender <span class="req">✦</span></label>
+        <div class="radio-row" id="genderRow">
+          <div class="radio-opt">
+            <input type="radio" name="gender" id="gM" value="Male"/>
+            <label class="radio-card" for="gM">
+              <span class="radio-pip"></span> Male
+            </label>
+          </div>
+          <div class="radio-opt">
+            <input type="radio" name="gender" id="gF" value="Female"/>
+            <label class="radio-card" for="gF">
+              <span class="radio-pip"></span> Female
+            </label>
+          </div>
+        </div>
+        <div class="field-error" id="genderErr">Please select your gender.</div>
+      </div>
+
+      <hr class="form-divider">
+
+      <!-- Academic -->
+      <div class="sec-head">
+        <div class="sec-line"></div>
+        <div class="sec-diamond"></div>
+        <div class="sec-title">Academic Information</div>
+        <div class="sec-diamond"></div>
+        <div class="sec-line"></div>
+      </div>
+
+      <!-- University -->
+      <div class="form-group">
+        <label class="field-label">University <span class="req">✦</span></label>
+        <select id="university">
+          <option value="">— Select your university —</option>
+          <optgroup label="Alabama">
+            <option>Auburn University</option>
+            <option>University of Alabama</option>
+            <option>University of Alabama at Birmingham</option>
+          </optgroup>
+          <optgroup label="Alaska">
+            <option>University of Alaska Anchorage</option>
+            <option>University of Alaska Fairbanks</option>
+          </optgroup>
+          <optgroup label="Arizona">
+            <option>Arizona State University</option>
+            <option>Northern Arizona University</option>
+            <option>University of Arizona</option>
+          </optgroup>
+          <optgroup label="Arkansas">
+            <option>Arkansas State University</option>
+            <option>University of Arkansas</option>
+          </optgroup>
+          <optgroup label="California">
+            <option>California Institute of Technology (Caltech)</option>
+            <option>California State University, Fullerton</option>
+            <option>California State University, Long Beach</option>
+            <option>California State University, Los Angeles</option>
+            <option>California State University, Northridge</option>
+            <option>California State University, Sacramento</option>
+            <option>Chapman University</option>
+            <option>Claremont McKenna College</option>
+            <option>Harvey Mudd College</option>
+            <option>Loyola Marymount University</option>
+            <option>Pepperdine University</option>
+            <option>Pomona College</option>
+            <option>San Diego State University</option>
+            <option>San Francisco State University</option>
+            <option>San Jose State University</option>
+            <option>Stanford University</option>
+            <option>UC Berkeley</option>
+            <option>UC Davis</option>
+            <option>UC Irvine</option>
+            <option>UC Los Angeles (UCLA)</option>
+            <option>UC Merced</option>
+            <option>UC Riverside</option>
+            <option>UC San Diego (UCSD)</option>
+            <option>UC Santa Barbara</option>
+            <option>UC Santa Cruz</option>
+            <option>University of San Francisco</option>
+            <option>University of Southern California (USC)</option>
+            <option>University of the Pacific</option>
+          </optgroup>
+          <optgroup label="Colorado">
+            <option>Colorado School of Mines</option>
+            <option>Colorado State University</option>
+            <option>University of Colorado Boulder</option>
+            <option>University of Colorado Denver</option>
+            <option>University of Denver</option>
+          </optgroup>
+          <optgroup label="Connecticut">
+            <option>Fairfield University</option>
+            <option>Quinnipiac University</option>
+            <option>Trinity College</option>
+            <option>University of Connecticut</option>
+            <option>Wesleyan University</option>
+            <option>Yale University</option>
+          </optgroup>
+          <optgroup label="Delaware">
+            <option>Delaware State University</option>
+            <option>University of Delaware</option>
+          </optgroup>
+          <optgroup label="Florida">
+            <option>Florida Atlantic University</option>
+            <option>Florida International University</option>
+            <option>Florida State University</option>
+            <option>Rollins College</option>
+            <option>Stetson University</option>
+            <option>University of Central Florida</option>
+            <option>University of Florida</option>
+            <option>University of Miami</option>
+            <option>University of South Florida</option>
+          </optgroup>
+          <optgroup label="Georgia">
+            <option>Emory University</option>
+            <option>Georgia Institute of Technology</option>
+            <option>Georgia State University</option>
+            <option>Morehouse College</option>
+            <option>Spelman College</option>
+            <option>University of Georgia</option>
+          </optgroup>
+          <optgroup label="Hawaii">
+            <option>University of Hawaii at Manoa</option>
+          </optgroup>
+          <optgroup label="Idaho">
+            <option>Boise State University</option>
+            <option>University of Idaho</option>
+          </optgroup>
+          <optgroup label="Illinois">
+            <option>DePaul University</option>
+            <option>Illinois Institute of Technology</option>
+            <option>Illinois State University</option>
+            <option>Loyola University Chicago</option>
+            <option>Northwestern University</option>
+            <option>Southern Illinois University</option>
+            <option>University of Chicago</option>
+            <option>University of Illinois Chicago</option>
+            <option>University of Illinois Urbana-Champaign</option>
+          </optgroup>
+          <optgroup label="Indiana">
+            <option>Butler University</option>
+            <option>DePauw University</option>
+            <option>Indiana University Bloomington</option>
+            <option>Purdue University</option>
+            <option>University of Notre Dame</option>
+          </optgroup>
+          <optgroup label="Iowa">
+            <option>Drake University</option>
+            <option>Grinnell College</option>
+            <option>Iowa State University</option>
+            <option>University of Iowa</option>
+          </optgroup>
+          <optgroup label="Kansas">
+            <option>Kansas State University</option>
+            <option>University of Kansas</option>
+          </optgroup>
+          <optgroup label="Kentucky">
+            <option>University of Kentucky</option>
+            <option>University of Louisville</option>
+          </optgroup>
+          <optgroup label="Louisiana">
+            <option>Louisiana State University</option>
+            <option>Tulane University</option>
+            <option>University of New Orleans</option>
+          </optgroup>
+          <optgroup label="Maine">
+            <option>Bowdoin College</option>
+            <option>Colby College</option>
+            <option>University of Maine</option>
+          </optgroup>
+          <optgroup label="Maryland">
+            <option>Johns Hopkins University</option>
+            <option>Loyola University Maryland</option>
+            <option>Towson University</option>
+            <option>University of Maryland</option>
+            <option>University of Maryland Baltimore County</option>
+          </optgroup>
+          <optgroup label="Massachusetts">
+            <option>Amherst College</option>
+            <option>Boston College</option>
+            <option>Boston University</option>
+            <option>Brandeis University</option>
+            <option>Harvard University</option>
+            <option>Massachusetts Institute of Technology (MIT)</option>
+            <option>Mount Holyoke College</option>
+            <option>Northeastern University</option>
+            <option>Smith College</option>
+            <option>Tufts University</option>
+            <option>University of Massachusetts Amherst</option>
+            <option>Wellesley College</option>
+            <option>Williams College</option>
+            <option>Worcester Polytechnic Institute (WPI)</option>
+          </optgroup>
+          <optgroup label="Michigan">
+            <option>Kalamazoo College</option>
+            <option>Michigan State University</option>
+            <option>University of Michigan</option>
+            <option>Wayne State University</option>
+            <option>Western Michigan University</option>
+          </optgroup>
+          <optgroup label="Minnesota">
+            <option>Carleton College</option>
+            <option>Macalester College</option>
+            <option>St. Olaf College</option>
+            <option>University of Minnesota</option>
+          </optgroup>
+          <optgroup label="Mississippi">
+            <option>Mississippi State University</option>
+            <option>University of Mississippi</option>
+          </optgroup>
+          <optgroup label="Missouri">
+            <option>Missouri University of Science and Technology</option>
+            <option>Saint Louis University</option>
+            <option>University of Missouri</option>
+            <option>Washington University in St. Louis</option>
+          </optgroup>
+          <optgroup label="Montana">
+            <option>Montana State University</option>
+            <option>University of Montana</option>
+          </optgroup>
+          <optgroup label="Nebraska">
+            <option>Creighton University</option>
+            <option>University of Nebraska-Lincoln</option>
+          </optgroup>
+          <optgroup label="Nevada">
+            <option>University of Nevada, Las Vegas</option>
+            <option>University of Nevada, Reno</option>
+          </optgroup>
+          <optgroup label="New Hampshire">
+            <option>Dartmouth College</option>
+            <option>University of New Hampshire</option>
+          </optgroup>
+          <optgroup label="New Jersey">
+            <option>Drew University</option>
+            <option>Princeton University</option>
+            <option>Rutgers University</option>
+            <option>Stevens Institute of Technology</option>
+          </optgroup>
+          <optgroup label="New Mexico">
+            <option>New Mexico State University</option>
+            <option>University of New Mexico</option>
+          </optgroup>
+          <optgroup label="New York">
+            <option>Barnard College</option>
+            <option>Binghamton University (SUNY)</option>
+            <option>Brooklyn College (CUNY)</option>
+            <option>City College of New York (CUNY)</option>
+            <option>Columbia University</option>
+            <option>Cornell University</option>
+            <option>Fordham University</option>
+            <option>Hamilton College</option>
+            <option>Hofstra University</option>
+            <option>Hunter College (CUNY)</option>
+            <option>New York University (NYU)</option>
+            <option>Queens College (CUNY)</option>
+            <option>Rensselaer Polytechnic Institute (RPI)</option>
+            <option>Rochester Institute of Technology (RIT)</option>
+            <option>St. John's University</option>
+            <option>Stony Brook University (SUNY)</option>
+            <option>Syracuse University</option>
+            <option>University at Albany (SUNY)</option>
+            <option>University at Buffalo (SUNY)</option>
+            <option>University of Rochester</option>
+            <option>Vassar College</option>
+            <option>Yeshiva University</option>
+          </optgroup>
+          <optgroup label="North Carolina">
+            <option>Appalachian State University</option>
+            <option>Davidson College</option>
+            <option>Duke University</option>
+            <option>Elon University</option>
+            <option>North Carolina State University</option>
+            <option>UNC Chapel Hill</option>
+            <option>Wake Forest University</option>
+          </optgroup>
+          <optgroup label="North Dakota">
+            <option>North Dakota State University</option>
+            <option>University of North Dakota</option>
+          </optgroup>
+          <optgroup label="Ohio">
+            <option>Case Western Reserve University</option>
+            <option>Kenyon College</option>
+            <option>Miami University</option>
+            <option>Oberlin College</option>
+            <option>Ohio State University</option>
+            <option>Ohio University</option>
+            <option>University of Cincinnati</option>
+            <option>University of Dayton</option>
+            <option>University of Toledo</option>
+          </optgroup>
+          <optgroup label="Oklahoma">
+            <option>Oklahoma State University</option>
+            <option>University of Oklahoma</option>
+            <option>University of Tulsa</option>
+          </optgroup>
+          <optgroup label="Oregon">
+            <option>Oregon State University</option>
+            <option>Portland State University</option>
+            <option>Reed College</option>
+            <option>University of Oregon</option>
+            <option>Willamette University</option>
+          </optgroup>
+          <optgroup label="Pennsylvania">
+            <option>Bucknell University</option>
+            <option>Carnegie Mellon University</option>
+            <option>Dickinson College</option>
+            <option>Drexel University</option>
+            <option>Franklin &amp; Marshall College</option>
+            <option>Gettysburg College</option>
+            <option>Haverford College</option>
+            <option>Lafayette College</option>
+            <option>Lehigh University</option>
+            <option>Penn State University</option>
+            <option>Swarthmore College</option>
+            <option>Temple University</option>
+            <option>University of Pennsylvania</option>
+            <option>University of Pittsburgh</option>
+            <option>Villanova University</option>
+          </optgroup>
+          <optgroup label="Rhode Island">
+            <option>Brown University</option>
+            <option>Providence College</option>
+            <option>Rhode Island School of Design (RISD)</option>
+            <option>University of Rhode Island</option>
+          </optgroup>
+          <optgroup label="South Carolina">
+            <option>Clemson University</option>
+            <option>College of Charleston</option>
+            <option>University of South Carolina</option>
+            <option>Wofford College</option>
+          </optgroup>
+          <optgroup label="South Dakota">
+            <option>South Dakota State University</option>
+            <option>University of South Dakota</option>
+          </optgroup>
+          <optgroup label="Tennessee">
+            <option>Belmont University</option>
+            <option>Rhodes College</option>
+            <option>University of Tennessee</option>
+            <option>Vanderbilt University</option>
+          </optgroup>
+          <optgroup label="Texas">
+            <option>Baylor University</option>
+            <option>Rice University</option>
+            <option>Southern Methodist University (SMU)</option>
+            <option>Texas A&amp;M University</option>
+            <option>Texas Christian University (TCU)</option>
+            <option>Texas Tech University</option>
+            <option>Trinity University</option>
+            <option>University of Houston</option>
+            <option>University of North Texas</option>
+            <option>University of Texas at Austin</option>
+            <option>University of Texas at Dallas</option>
+            <option>University of Texas at San Antonio</option>
+          </optgroup>
+          <optgroup label="Utah">
+            <option>Brigham Young University (BYU)</option>
+            <option>University of Utah</option>
+            <option>Utah State University</option>
+          </optgroup>
+          <optgroup label="Vermont">
+            <option>Middlebury College</option>
+            <option>University of Vermont</option>
+          </optgroup>
+          <optgroup label="Virginia">
+            <option>College of William &amp; Mary</option>
+            <option>George Mason University</option>
+            <option>James Madison University</option>
+            <option>University of Richmond</option>
+            <option>University of Virginia</option>
+            <option>Virginia Commonwealth University</option>
+            <option>Virginia Tech</option>
+            <option>Washington and Lee University</option>
+          </optgroup>
+          <optgroup label="Washington">
+            <option>Gonzaga University</option>
+            <option>Seattle University</option>
+            <option>University of Washington</option>
+            <option>Washington State University</option>
+            <option>Whitman College</option>
+          </optgroup>
+          <optgroup label="West Virginia">
+            <option>West Virginia University</option>
+          </optgroup>
+          <optgroup label="Wisconsin">
+            <option>Beloit College</option>
+            <option>Lawrence University</option>
+            <option>Marquette University</option>
+            <option>University of Wisconsin-Madison</option>
+            <option>University of Wisconsin-Milwaukee</option>
+          </optgroup>
+          <optgroup label="Wyoming">
+            <option>University of Wyoming</option>
+          </optgroup>
+          <optgroup label="Washington D.C.">
+            <option>American University</option>
+            <option>George Washington University</option>
+            <option>Georgetown University</option>
+            <option>Howard University</option>
+          </optgroup>
+          <optgroup label="Other">
+            <option>Community College</option>
+            <option>Other (not listed)</option>
+          </optgroup>
+        </select>
+        <div class="field-error" id="universityErr">Please select your university.</div>
+      </div>
+
+      <hr class="form-divider">
+
+      <!-- Contact & Identity -->
+      <div class="sec-head">
+        <div class="sec-line"></div>
+        <div class="sec-diamond"></div>
+        <div class="sec-title">Contact &amp; Identity</div>
+        <div class="sec-diamond"></div>
+        <div class="sec-line"></div>
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label class="field-label">E-mail Address <span class="req">✦</span></label>
+        <input type="email" id="email" placeholder="your@university.edu" autocomplete="email"/>
+        <div class="field-hint">A confirmation will be sent to this address.</div>
+        <div class="field-error" id="emailErr">Please enter a valid email address.</div>
+      </div>
+
+      <!-- Passport + Nationality row -->
+      <div class="form-row">
+        <div class="form-group">
+          <label class="field-label">Passport Number <span class="req">✦</span></label>
+          <input type="text" id="passport" placeholder="e.g. 123456789" maxlength="20"
+                 style="font-family:monospace;letter-spacing:0.08em;text-transform:uppercase;"/>
+          <div class="field-hint">Stored securely. Confidential.</div>
+          <div class="field-error" id="passportErr">Please enter your passport number.</div>
+        </div>
+        <div class="form-group">
+          <label class="field-label">Nationality <span class="req">✦</span></label>
+          <select id="nationality">
+            <option value="">— Select —</option>
+            <option value="American">American</option>
+          </select>
+          <div class="field-error" id="nationalityErr">Please confirm nationality.</div>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div class="submit-area">
+        <button type="submit" class="btn-submit" id="submitBtn">
+          <div class="btn-inner">
+            <span id="btnText">Submit Application</span>
+            <div class="spinner" id="spinner"></div>
+            <div class="btn-arrow" id="btnArrow"></div>
+          </div>
+        </button>
+        <div class="submit-note">
+          By submitting, you confirm that all<br>
+          information provided is accurate and complete.
+        </div>
+      </div>
+
+    </form>
+
+    <!-- Success -->
+    <div class="success" id="successScreen">
+      <div class="success-seal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
+      <h2>Application Received</h2>
+      <p>
+        Thank you for applying to the<br>
+        Chinese Culture Experience Camp 2026.<br><br>
+        A confirmation email has been sent to<br>
+        the address you provided.
+      </p>
+      <div class="ref-pill" id="refPill"></div>
+    </div>
+
+  </div><!-- /.form-card -->
+
+  <!-- Footer ornament -->
+  <div class="footer-orn">
+    <div class="footer-orn-text">北京 · 天津 · 承德 &nbsp;·&nbsp; Beijing · Tianjin · Chengde</div>
+  </div>
+
+</div><!-- /.wrap -->
+
 <script>
 // ================================================================
-// ⚙️  配置 — 替换为您的 Apps Script 网址
+// ⚙️  CONFIG — replace with your deployed Apps Script URL
 // ================================================================
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbytfm1iIGlPVIbd3UsDi6ouITfUDwOaSiqAlLkKb4v9b4AFry3OOohZ3GfbuAGfQqIlGg/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";
 // ================================================================
 
-const form = document.getElementById('regForm');
-const submitBtn = document.getElementById('submitBtn');
-const errorBanner = document.getElementById('errorBanner');
+const form       = document.getElementById('regForm');
+const submitBtn  = document.getElementById('submitBtn');
+const errBanner  = document.getElementById('errBanner');
 
-function setFieldError(id, errId, hasError) {
-  document.getElementById(id).classList.toggle('error', hasError);
-  document.getElementById(errId).classList.toggle('visible', hasError);
+function setErr(id, errId, hasError) {
+  const el = document.getElementById(id);
+  if (el) el.classList.toggle('error', hasError);
+  const e  = document.getElementById(errId);
+  if (e)  e.classList.toggle('visible', hasError);
   return !hasError;
 }
 
 function validate() {
   const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const age     = parseInt(document.getElementById('age').value.trim(), 10);
+  const gender  = document.querySelector('input[name="gender"]:checked');
   let ok = true;
-  ok = setFieldError('name',     'nameErr',     !document.getElementById('name').value.trim()) && ok;
-  ok = setFieldError('email',    'emailErr',    !emailRe.test(document.getElementById('email').value.trim())) && ok;
-  ok = setFieldError('org',      'orgErr',      !document.getElementById('org').value.trim()) && ok;
-  ok = setFieldError('passport', 'passportErr', !document.getElementById('passport').value.trim()) && ok;
+
+  ok = setErr('name',        'nameErr',        !document.getElementById('name').value.trim())         && ok;
+  ok = setErr('age',         'ageErr',          isNaN(age) || age < 17 || age > 35)                   && ok;
+
+  if (!gender) {
+    document.getElementById('genderRow').classList.add('error');
+    document.getElementById('genderErr').classList.add('visible');
+    ok = false;
+  } else {
+    document.getElementById('genderRow').classList.remove('error');
+    document.getElementById('genderErr').classList.remove('visible');
+  }
+
+  ok = setErr('university',  'universityErr',  !document.getElementById('university').value)          && ok;
+  ok = setErr('email',       'emailErr',       !emailRe.test(document.getElementById('email').value.trim())) && ok;
+  ok = setErr('passport',    'passportErr',    !document.getElementById('passport').value.trim())      && ok;
+  ok = setErr('nationality', 'nationalityErr', !document.getElementById('nationality').value)          && ok;
   return ok;
 }
 
-['name','email','org','passport'].forEach(id => {
-  document.getElementById(id).addEventListener('input', () => {
-    document.getElementById(id).classList.remove('error');
+['name','age','email','passport'].forEach(id => {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.addEventListener('input', () => {
+    el.classList.remove('error');
+    const e = document.getElementById(id + 'Err');
+    if (e) e.classList.remove('visible');
+  });
+});
+['university','nationality'].forEach(id => {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.addEventListener('change', () => {
+    el.classList.remove('error');
     const e = document.getElementById(id + 'Err');
     if (e) e.classList.remove('visible');
   });
 });
 
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  errorBanner.classList.remove('visible');
+form.addEventListener('submit', async (ev) => {
+  ev.preventDefault();
+  errBanner.classList.remove('visible');
   if (!validate()) return;
 
   submitBtn.disabled = true;
   submitBtn.classList.add('loading');
 
+  const g = document.querySelector('input[name="gender"]:checked');
   const payload = {
-    name:      document.getElementById('name').value.trim(),
-    email:     document.getElementById('email').value.trim(),
-    org:       document.getElementById('org').value.trim(),
-    passport:  document.getElementById('passport').value.trim().toUpperCase(),
-    source:    document.getElementById('source').value.trim(),
-    remarks:   document.getElementById('remarks').value.trim(),
-    timestamp: new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' }),
+    name:        document.getElementById('name').value.trim(),
+    age:         document.getElementById('age').value.trim(),
+    birthday:    document.getElementById('birthday').value || '',
+    gender:      g ? g.value : '',
+    university:  document.getElementById('university').value,
+    email:       document.getElementById('email').value.trim(),
+    passport:    document.getElementById('passport').value.trim().toUpperCase(),
+    nationality: document.getElementById('nationality').value,
+    timestamp:   new Date().toLocaleString('en-US', { timeZone: 'America/New_York' }),
   };
 
   try {
-    const res = await fetch(APPS_SCRIPT_URL, {
-      method: 'POST',
-      body: JSON.stringify(payload),
-    });
+    const res  = await fetch(APPS_SCRIPT_URL, { method: 'POST', body: JSON.stringify(payload) });
     const data = await res.json();
     if (data.status === 'ok') {
       form.style.display = 'none';
       document.getElementById('successScreen').classList.add('visible');
-      document.getElementById('refCode').textContent = '报名编号 ' + (data.ref || genRef());
+      document.getElementById('refPill').textContent = 'Application No.  ' + (data.ref || genRef());
     } else {
-      throw new Error(data.message || '服务器返回错误');
+      throw new Error(data.message || 'Server error');
     }
   } catch (err) {
-    errorBanner.textContent = '提交时发生错误，请稍后重试。错误信息：' + err.message;
-    errorBanner.classList.add('visible');
+    errBanner.textContent = 'Submission failed — please try again. (' + err.message + ')';
+    errBanner.classList.add('visible');
     submitBtn.disabled = false;
     submitBtn.classList.remove('loading');
   }
 });
 
 function genRef() {
-  return 'REG-' + Date.now().toString(36).toUpperCase();
+  return 'CCEC-' + Date.now().toString(36).toUpperCase();
 }
 </script>
 </body>
